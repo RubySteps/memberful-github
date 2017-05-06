@@ -16,7 +16,7 @@ module MemberfulGithub
         order_purchased json
       when 'order.refunded'
         order_refunded json
-      when 'subscription.deactivated', 'subscription.deleted'
+      when 'subscription.deactivated'
         subscription_deactivated json
       end
     end
