@@ -1,2 +1,2 @@
-require_relative 'memberful_github'
-run MemberfulGithub.new
+require_relative 'lib/memberful_github'
+run MemberfulGithub::App.new
