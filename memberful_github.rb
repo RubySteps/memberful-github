@@ -3,12 +3,22 @@ require 'json'
 
 class MemberfulGithub
   def call(env)
-    json = JSON.parse env['rack.input'].read
+    request = Rack::Request.new(env)
+    return unauthorized unless valid_key?(request.params['key'])
 
+    json = JSON.parse env['rack.input'].read
     client = Client.new json
     response = client.handle
 
     [200, {"Content-Type" => "text/plain"}, [response.inspect]]
+  end
+
+  def valid_key?(key)
+    ENV['MEMBERFUL_KEY'] && ENV['MEMBERFUL_KEY'] == key
+  end
+
+  def unauthorized
+    [401, {"Content-Type" => "text/plain"}, ["key is incorrect"]]
   end
 
   class Client
