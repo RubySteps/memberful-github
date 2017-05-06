@@ -2,7 +2,7 @@ module MemberfulGithub
   class App
     def call(env)
       request = Rack::Request.new(env)
-      return unauthorized unless valid_key?(request.params['key'])
+      return unauthorized unless valid_token?(request.params['token'])
 
       json = JSON.parse env['rack.input'].read
       puts "******* json params *******"
@@ -15,8 +15,8 @@ module MemberfulGithub
       [200, {"Content-Type" => "text/plain"}, [response.inspect]]
     end
 
-    def valid_key?(key)
-      ENV.fetch('MEMBERFUL_KEY') == key
+    def valid_token?(token)
+      ENV.fetch('MEMBERFUL_WEBHOOK_TOKEN') == token
     end
 
     def unauthorized
