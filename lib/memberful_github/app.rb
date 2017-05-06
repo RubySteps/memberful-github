@@ -7,7 +7,7 @@ module MemberfulGithub
       json = JSON.parse env['rack.input'].read
       puts "******* json params *******"
       p json
-      client = Client.new json
+      client = Client.new
       response = client.webhook json
       puts "******* response *******"
       p response
