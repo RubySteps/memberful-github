@@ -7,9 +7,12 @@ class MemberfulGithub
     return unauthorized unless valid_key?(request.params['key'])
 
     json = JSON.parse env['rack.input'].read
+    puts "******* json params *******"
     p json
     client = Client.new json
     response = client.handle
+    puts "******* response *******"
+    p response
 
     [200, {"Content-Type" => "text/plain"}, [response.inspect]]
   end
