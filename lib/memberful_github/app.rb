@@ -8,7 +8,7 @@ module MemberfulGithub
       puts "******* json params *******"
       p json
       client = Client.new json
-      response = client.handle
+      response = client.webhook json
       puts "******* response *******"
       p response
 
