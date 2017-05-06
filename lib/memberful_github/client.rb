@@ -44,17 +44,17 @@ module MemberfulGithub
 
     def order_purchased(json)
       id = json.fetch('order').fetch('member').fetch('id')
-      member_details {|md| add_member md.fetch('member').fetch('github') }
+      member_details(id) {|md| add_member md.fetch('member').fetch('github') }
     end
 
     def order_refunded(json)
       id = json.fetch('order').fetch('member').fetch('id')
-      member_details {|md| remove_member md.fetch('member').fetch('github') }
+      member_details(id) {|md| remove_member md.fetch('member').fetch('github') }
     end
 
     def subscription_deactivated(json)
       id = json.fetch('subscription').fetch('member').fetch('id')
-      member_details {|md| remove_member md.fetch('member').fetch('github') }
+      member_details(id) {|md| remove_member md.fetch('member').fetch('github') }
     end
 
     def add_member(username)
