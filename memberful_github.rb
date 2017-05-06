@@ -41,7 +41,7 @@ class MemberfulGithub
 
     private
     def order_purchased
-      username = @json.fetch('member').fetch('github_username')
+      username = @json.fetch('order').fetch('member').fetch('github_username')
       add_member username
     end
 
