@@ -24,8 +24,8 @@ module MemberfulGithub
     def member_details(id)
       JSON.parse(open(member_url(id)).read).tap do |details|
         details['member']['github'] = details.fetch('member').fetch('custom_field')
-        .split('/').last # in case they provide URL
-        .split('@').last # in case they include @ in the name
+          .split('/').last # in case they provide URL
+          .split('@').last # in case they include @ in the name
       end
     end
 
@@ -35,17 +35,17 @@ module MemberfulGithub
 
     def order_purchased(json)
       id = json.fetch('order').fetch('member').fetch('id')
-      add_member member_details(id)['github']
+      add_member member_details(id).fetch('member').fetch('github')
     end
 
     def order_refunded(json)
       id = json.fetch('order').fetch('member').fetch('id')
-      remove_member member_details(id)['github']
+      remove_member member_details(id).fetch('member').fetch('github')
     end
 
     def subscription_deactivated(json)
       id = json.fetch('subscription').fetch('member').fetch('id')
-      remove_member member_details(id)['github']
+      remove_member member_details(id).fetch('member').fetch('github')
     end
 
     def add_member(username)
