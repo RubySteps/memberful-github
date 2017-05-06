@@ -21,11 +21,20 @@ module MemberfulGithub
       end
     end
 
-    def member_details(id)
+    def member_details_hash(id)
       JSON.parse(open(member_url(id)).read).tap do |details|
-        details['member']['github'] = details.fetch('member').fetch('custom_field')
-          .split('/').last # in case they provide URL
-          .split('@').last # in case they include @ in the name
+        member_details = details.fetch('member')
+        unless member_details['deleted']
+          details['member']['github'] = member_details.fetch('custom_field')
+            .split('/').last # in case they provide URL
+            .split('@').last # in case they include @ in the name
+        end
+      end
+    end
+
+    def member_details(id)
+      member_details_hash(id).tap do |details|
+        yield(details) unless details.fetch('member')['deleted']
       end
     end
 
@@ -35,17 +44,17 @@ module MemberfulGithub
 
     def order_purchased(json)
       id = json.fetch('order').fetch('member').fetch('id')
-      add_member member_details(id).fetch('member').fetch('github')
+      member_details {|md| add_member md.fetch('member').fetch('github') }
     end
 
     def order_refunded(json)
       id = json.fetch('order').fetch('member').fetch('id')
-      remove_member member_details(id).fetch('member').fetch('github')
+      member_details {|md| remove_member md.fetch('member').fetch('github') }
     end
 
     def subscription_deactivated(json)
       id = json.fetch('subscription').fetch('member').fetch('id')
-      remove_member member_details(id).fetch('member').fetch('github')
+      member_details {|md| remove_member md.fetch('member').fetch('github') }
     end
 
     def add_member(username)
