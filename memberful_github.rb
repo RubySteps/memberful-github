@@ -33,8 +33,7 @@ class MemberfulGithub
         order_purchased
       when 'order.refunded'
         order_refunded
-      when 'subscription.deactivated'
-      when 'subscription.deleted'
+      when 'subscription.deactivated', 'subscription.deleted'
         subscription_deactivated
       end
     end
