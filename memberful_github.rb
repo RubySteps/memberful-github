@@ -41,17 +41,17 @@ class MemberfulGithub
 
     private
     def order_purchased
-      username = @json.fetch('order').fetch('member').fetch('github_username')
+      username = @json.fetch('order').fetch('member').fetch('custom_field')
       add_member username
     end
 
     def order_refunded
-      username = @json.fetch('order').fetch('member').fetch('github_username')
+      username = @json.fetch('order').fetch('member').fetch('custom_field')
       remove_member username
     end
 
     def subscription_deactivated
-      username = @json.fetch('subscription').fetch('member').fetch('github_username')
+      username = @json.fetch('subscription').fetch('member').fetch('custom_field')
       remove_member username
     end
 
