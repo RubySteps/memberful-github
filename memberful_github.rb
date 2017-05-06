@@ -14,7 +14,7 @@ class MemberfulGithub
   end
 
   def valid_key?(key)
-    ENV['MEMBERFUL_KEY'] && ENV['MEMBERFUL_KEY'] == key
+    ENV.fetch('MEMBERFUL_KEY') == key
   end
 
   def unauthorized
@@ -23,7 +23,7 @@ class MemberfulGithub
 
   class Client
     def initialize(json)
-      @client = Octokit::Client.new(:access_token => ENV['GITHUB_TOKEN'])
+      @client = Octokit::Client.new(:access_token => ENV.fetch('GITHUB_TOKEN'))
       @json = json
     end
 
@@ -55,11 +55,11 @@ class MemberfulGithub
     end
 
     def add_member(username)
-      @client.add_team_membership ENV['TEAM_ID'], username
+      @client.add_team_membership ENV.fetch('TEAM_ID'), username
     end
 
     def remove_member(username)
-      @client.remove_organization_membership(ENV['ORG_NAME'], user: username)
+      @client.remove_organization_membership(ENV.fetch('ORG_NAME'), user: username)
     end
   end
 end
